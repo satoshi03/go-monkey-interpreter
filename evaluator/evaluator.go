@@ -24,7 +24,7 @@ func Eval(node ast.Node) object.Object {
 		return &object.Integer{Value: node.Value}
 
 	case *ast.Boolean:
-		return nativeBooleToBooleanPbject(node.Value)
+		return nativeBooleToBooleanObject(node.Value)
 
 	case *ast.PrefixExpression:
 		right := Eval(node.Right)
@@ -39,7 +39,7 @@ func Eval(node ast.Node) object.Object {
 	return nil
 }
 
-func nativeBooleToBooleanPbject(input bool) *object.Boolean {
+func nativeBooleToBooleanObject(input bool) *object.Boolean {
 	if input {
 		return TRUE
 	}
@@ -89,6 +89,14 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal * rightVal}
 	case "/":
 		return &object.Integer{Value: leftVal / rightVal}
+	case "<":
+		return nativeBooleToBooleanObject(leftVal < rightVal)
+	case ">":
+		return nativeBooleToBooleanObject(leftVal > rightVal)
+	case "==":
+		return nativeBooleToBooleanObject(leftVal == rightVal)
+	case "!=":
+		return nativeBooleToBooleanObject(leftVal != rightVal)
 	default:
 		return NULL
 	}
